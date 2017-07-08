@@ -5,6 +5,9 @@ var fs=require("fs");
 //fs.readdir(__dirname,function(err,files){
 //    console.log(files);
 //})
+var stdin=process.stdin;
+var stdout=process.stdout;
+
 fs.readdir(process.cwd(),function(err,files){
     console.log('');
     if(!files.length){
@@ -21,11 +24,9 @@ fs.readdir(process.cwd(),function(err,files){
 
             }
 
-            i++;
-            if(i==files.length){
-                console.log('');
-                process.stdout.write(   '\033[33mEnter your choice:\033[39m');
-                process.stdin.resume();
+
+            if(++i==files.length){
+                read();
             }else{
                 file(i);
             }
@@ -36,5 +37,19 @@ fs.readdir(process.cwd(),function(err,files){
 
         });
     }
+    function read(){
+        console.log('');
+        stdout.write(   '\033[33mEnter your choice:\033[39m');
+        stdin.resume();
+        stdin.setEncoding('utf8');
+        stdin.on('data',option);
+    }
+    function option(){
+        if(!files[Number(data)]){
+            stdout.write(   '\033[31mEnter your choice:\033[39m');
+        }else{
+            stdin(pause);
+        }
+    }
     file(0);
-})
+});
